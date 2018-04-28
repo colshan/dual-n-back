@@ -23,8 +23,7 @@ const state = {
 const ctrl = {
 
 	/** Randomnly select next position and audio clip to play
-	 * Record history in state object.  Call pres.displayNext
-	 * to update DOM.
+	 * Record history in state object.
 	 */
 	next: function () {
 
@@ -46,7 +45,6 @@ const ctrl = {
 	},
 
 	/** Add event listeners to controls.
-	 *
 	 */
 	setUpUserControls: function () {
 
@@ -60,6 +58,8 @@ const ctrl = {
 	}
 };
 
+/** Object that contains functions that modify the DOM
+ */
 const pres = {
 
 	/** Play audio clip and modify DOM to display block in correct position
