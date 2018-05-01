@@ -10,10 +10,25 @@ const storage = {
 const state = {
 
 	n: 2,
+
 	positionHistory: [],
 	audioHistory: [],
-	right: 0,
-	wrong: 0
+
+	userInputPosition: false,
+	userInputAudio: false,
+
+	positionIsPositive: false,
+	audioIsPositive: false,
+
+	truePositivePosition: 0,
+	trueNegativePosition: 0,
+	falsePositivePosition: 0,
+	falseNegativePosition: 0,
+
+	truePositiveAudio: 0,
+	trueNegativeAudio: 0,
+	falsePositiveAudio: 0,
+	falseNegativeAudio: 0
 
 };
 
@@ -22,23 +37,39 @@ const state = {
  */
 const ctrl = {
 
-	/** Randomnly select next position and audio clip to play
+	/** Establishes expectation for user input for current round.
+	 * Stores results in state.positionIsPositive and
+	 * state.audioIsPositive
+	 */
+	currentExpectation: function () {
+
+	},
+
+	/** Tear down previous round 
+	 * Randomnly select next position and audio clip to play
+	 * call currentExpectation
 	 * Record history in state object.
 	 */
 	next: function () {
 
 	},
+ 
+	/** Calculate score from previous round and update
+	 */
+	tally: function () {
 
-	/** Use setInterval to regularly call next function.
+	},
+
+	/** Use setInterval to generate new rounds.
 	 * Terminates and clears interval when game is over.
-	 * Cas gameOverModal.
+	 * Calls gameOverModal.
 	 */
 	gameLoop: function () {
 
 	},
 
-	/** Determine if user input corresponds to right or wrong answer.
-	 * Update state variables accordingly.
+	/** Store user input in state object properties, userInputPosition
+	 * and userInputAudio
 	 */
 	controlHandler: function () {
 
