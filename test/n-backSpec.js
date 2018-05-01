@@ -1,5 +1,3 @@
-'use strict';
-
 describe('ctrl.next', function () {
 	it('adds a position and audio file to state variables', function () {
 		const beforePosition = state.positionHistory.length;
@@ -33,6 +31,18 @@ describe('ctrl.tally', function() {
 		this.tna = state.trueNegativeAudio;
 		this.fna = state.falseNegativeAudio;
 
+	});
+
+	afterEach(function() {
+		state.truePositivePosition = 0;
+		state.trueNegativePosition = 0;
+		state.falsePositivePosition = 0;
+		state.falseNegativePosition = 0;
+
+		state.truePositiveAudio = 0;
+		state.trueNegativeAudio = 0;
+		state.falsePositiveAudio = 0;
+		state.falseNegativeAudio = 0;
 	});
 
 	it('increases truePositivePosition when user is actively correct about position, all others score variables remain unchanged', function() {

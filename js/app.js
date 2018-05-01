@@ -1,7 +1,7 @@
 /** Object that contains data that is not unique to user session
  */
 const storage = {
-	audioFiles: []
+	audioFiles: [0,1,2,3,4,5,6,7,8]
 };
 
 
@@ -10,6 +10,7 @@ const storage = {
 const state = {
 
 	n: 2,
+	loop: null,
 
 	positionHistory: [],
 	audioHistory: [],
@@ -42,42 +43,113 @@ const ctrl = {
 	 * state.audioIsPositive
 	 */
 	currentExpectation: function () {
-
+		let len = state.positionHistory.length;
+		if (len <= state.n){
+			state.positionIsPositive = false;
+			state.audioIsPositive = false;
+		} else {
+			state.positionIsPositive = (state.positionHistory[len-1] === state.positionHistory[len-1-state.n]);
+			state.audioIsPositive = (state.audioHistory[len-1] === state.audioHistory[len-1-state.n]);
+		}
 	},
 
-	/** Tear down previous round 
+	/**
+	 * return random number from 0 to 8
+	 */
+	getRandomIndex: function () {
+		return Math.floor(Math.random()*9);
+	},
+
+
+	getNextAudio: function () {
+		return storage.audioFiles[ctrl.getRandomIndex()];
+	},
+
+	/** Call tally.
+	 * Tear down previous round 
 	 * Randomnly select next position and audio clip to play
 	 * call currentExpectation
 	 * Record history in state object.
+	 * call game over modal
 	 */
 	next: function () {
+		if (state.positionHistory.length > 0){
+			ctrl.tally();
+		};
 
+		if (state.positionHistory.length >= 10){
+			clearInterval(state.loop);
+			pres.gameOverModal();
+		} else{
+
+			state.userInputPosition = false;
+			state.userInputAudio = false;
+
+			state.positionHistory.push(ctrl.getRandomIndex().toString(10));
+			state.audioHistory.push(ctrl.getNextAudio());
+			
+			ctrl.currentExpectation();
+
+			pres.displayNext();
+		}
 	},
  
 	/** Calculate score from previous round and update
 	 */
 	tally: function () {
+		let posSelect = state.userInputPosition;
+		let audSelect = state.userInputAudio;
+
+		let posActual = state.positionIsPositive;
+		let audActual = state.audioIsPositive;
+
+		if (posSelect && posActual){
+			state.truePositivePosition++;
+		} else if (!posSelect && !posActual) {
+			state.trueNegativePosition++;
+		} else if (posSelect && !posActual) {
+			state.falsePositivePosition++;
+		} else {
+			state.falseNegativePosition++;
+		}
+
+		if(audSelect && audActual){
+			state.truePositiveAudio++;
+		} else if (!audSelect && !audActual) {
+			state.trueNegativeAudio++;
+		} else if (audSelect && !audActual) {
+			state.falsePositiveAudio++;
+		} else {
+			state.falseNegativeAudio++;
+		}
 
 	},
 
 	/** Use setInterval to generate new rounds.
-	 * Terminates and clears interval when game is over.
-	 * Calls gameOverModal.
 	 */
 	gameLoop: function () {
+		state.loop = setInterval(ctrl.next, 2000);
+	},
+
+	/** Store user input in  userInputPosition
+	 */
+	positionControlHandler: function () {
+		state.userInputPosition = true;
 
 	},
 
-	/** Store user input in state object properties, userInputPosition
-	 * and userInputAudio
+	/** Store user input in userInputAudio
 	 */
-	controlHandler: function () {
+	audioControlHandler: function () {
+		state.userInputAudio = true;
 
 	},
 
 	/** Add event listeners to controls.
 	 */
 	setUpUserControls: function () {
+		document.getElementById('position').addEventListener('click', ctrl.positionControlHandler);
+		document.getElementById('audio').addEventListener('click', ctrl.audioControlHandler);
 
 	},
 
@@ -85,7 +157,8 @@ const ctrl = {
 	 * the game loop.
 	 */
 	init: function () {
-
+		ctrl.setUpUserControls();
+		ctrl.gameLoop();
 	}
 };
 
@@ -97,13 +170,26 @@ const pres = {
 	 * for a limited amount of time.
 	 */
 	displayNext: function () {
-
+		let cell = document.getElementById(state.positionHistory[state.positionHistory.length - 1]);
+		cell.style.backgroundColor = '#000000';
+		setTimeout(function () {
+			cell.style.backgroundColor = '#FFFFFF';
+		}, 1000);
 	},
 
 	/** Displays modal when game is over that shows game results.
 	 */
 	gameOverModal: function () {
-
+		console.log(state.truePositivePosition,
+	state.trueNegativePosition,
+	state.falsePositivePosition,
+	state.falseNegativePosition,
+	state.truePositiveAudio,
+	state.trueNegativeAudio,
+	state.falsePositiveAudio,
+	state.falseNegativeAudio,)
 	},
 
 };
+
+ctrl.init();
