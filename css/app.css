@@ -1,0 +1,15 @@
+.cell {
+	display: inline-block;
+	width: 200px;
+	height: 200px;
+	border: solid 1px;
+}
+
+#board {
+	width: 614px;
+	margin: auto;
+}
+
+header {
+	text-align: center;
+}
