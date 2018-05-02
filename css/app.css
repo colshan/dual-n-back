@@ -65,3 +65,11 @@ button {
 	display: block;
 	margin: auto;
 }
+
+#select-title {
+	margin-bottom: 5px;
+}
+
+select {
+	margin-bottom: 5px;
+}

@@ -160,6 +160,7 @@ const ctrl = {
 	 * the game loop.
 	 */
 	init: function () {
+		state.n = parseInt(document.getElementById('N').value,10);
 		ctrl.setUpUserControls();
 		pres.killModal();
 		ctrl.gameLoop();
