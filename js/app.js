@@ -174,9 +174,14 @@ const pres = {
 	 * for a limited amount of time.
 	 */
 
+	displayModal: function() {
+		document.getElementById('modal').style.display = 'block';
+	},
+
 	killModal: function () {
 		document.getElementById('modal').style.display = 'none';
 	},
+
 	displayNext: function () {
 		let cell = document.getElementById(state.positionHistory[state.positionHistory.length - 1]);
 		cell.style.backgroundColor = '#000000';
@@ -189,14 +194,17 @@ const pres = {
 	/** Displays modal when game is over that shows game results.
 	 */
 	gameOverModal: function () {
-		console.log(state.truePositivePosition,
+		//TODO
+		document.getElementById('modal-content').innerHTML = [state.truePositivePosition,
 	state.trueNegativePosition,
 	state.falsePositivePosition,
 	state.falseNegativePosition,
 	state.truePositiveAudio,
 	state.trueNegativeAudio,
 	state.falsePositiveAudio,
-	state.falseNegativeAudio,)
+	state.falseNegativeAudio];
+
+		pres.displayModal();
 	},
 
 };
