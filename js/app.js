@@ -1,7 +1,7 @@
 /** Object that contains data that is not unique to user session
  */
 const storage = {
-	audioFiles: [0,1,2,3,4,5,6,7,8]
+	audioFiles: ['a.wav','f.wav','g.wav','j.wav','m.wav','o.wav','w.wav','x.wav','z.wav']
 };
 
 
@@ -62,7 +62,8 @@ const ctrl = {
 
 
 	getNextAudio: function () {
-		return storage.audioFiles[ctrl.getRandomIndex()];
+		let filename = storage.audioFiles[ctrl.getRandomIndex()];
+		return './audio/' + filename;
 	},
 
 	/** Call tally.
@@ -77,7 +78,7 @@ const ctrl = {
 			ctrl.tally();
 		};
 
-		if (state.positionHistory.length >= 10){
+		if (state.positionHistory.length >= 20){
 			clearInterval(state.loop);
 			pres.gameOverModal();
 		} else{
@@ -128,7 +129,8 @@ const ctrl = {
 	/** Use setInterval to generate new rounds.
 	 */
 	gameLoop: function () {
-		state.loop = setInterval(ctrl.next, 2000);
+		ctrl.next();
+		state.loop = setInterval(ctrl.next, 2500);
 	},
 
 	/** Store user input in  userInputPosition
@@ -172,6 +174,7 @@ const pres = {
 	displayNext: function () {
 		let cell = document.getElementById(state.positionHistory[state.positionHistory.length - 1]);
 		cell.style.backgroundColor = '#000000';
+		new Audio(state.audioHistory[state.audioHistory.length -1]).play();
 		setTimeout(function () {
 			cell.style.backgroundColor = '#FFFFFF';
 		}, 1000);
