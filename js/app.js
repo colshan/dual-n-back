@@ -155,11 +155,13 @@ const ctrl = {
 
 	},
 
+
 	/** Initialize game.  Add event listeners to controls and start
 	 * the game loop.
 	 */
 	init: function () {
 		ctrl.setUpUserControls();
+		pres.killModal();
 		ctrl.gameLoop();
 	}
 };
@@ -171,6 +173,10 @@ const pres = {
 	/** Play audio clip and modify DOM to display block in correct position
 	 * for a limited amount of time.
 	 */
+
+	killModal: function () {
+		document.getElementById('modal').style.display = 'none';
+	},
 	displayNext: function () {
 		let cell = document.getElementById(state.positionHistory[state.positionHistory.length - 1]);
 		cell.style.backgroundColor = '#000000';
@@ -195,4 +201,4 @@ const pres = {
 
 };
 
-ctrl.init();
+document.getElementById('modal-button').addEventListener('click', ctrl.init);
